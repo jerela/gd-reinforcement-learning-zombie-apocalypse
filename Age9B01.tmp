@@ -1,0 +1,35 @@
+[gd_scene load_steps=5 format=3 uid="uid://dhrmm8q3krafx"]
+
+[ext_resource type="Script" path="res://Agent.gd" id="1_scjwo"]
+[ext_resource type="Texture2D" uid="uid://cybc842f6s5do" path="res://icon.svg" id="2_j83de"]
+[ext_resource type="PackedScene" uid="uid://bcbu0nchqx60j" path="res://Network.tscn" id="3_p7jrj"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mgw46"]
+radius = 64.0
+
+[node name="Agent" type="CharacterBody2D"]
+script = ExtResource("1_scjwo")
+raycast_sweep_increment = null
+type = null
+ammo = null
+health = null
+vision_range = null
+vision_fov = null
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_j83de")
+
+[node name="VisionRay" type="RayCast2D" parent="."]
+target_position = Vector2(0, 600)
+
+[node name="VisionLine" type="Line2D" parent="."]
+points = PackedVector2Array(0, 0, 0, 600)
+default_color = Color(1, 0, 1, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_mgw46")
+
+[node name="Network" parent="." instance=ExtResource("3_p7jrj")]
+input_nodes = 14
+hidden_nodes = 7
+output_nodes = 5

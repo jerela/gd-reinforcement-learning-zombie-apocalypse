@@ -1,0 +1,40 @@
+[gd_scene load_steps=6 format=3 uid="uid://cmcgagrd3be4u"]
+
+[ext_resource type="PackedScene" uid="uid://dhrmm8q3krafx" path="res://Agent.tscn" id="1_gkpms"]
+[ext_resource type="Shader" path="res://AgentColor.gdshader" id="2_ncfou"]
+[ext_resource type="Script" path="res://Survivor.gd" id="2_y63k7"]
+[ext_resource type="Texture2D" uid="uid://c26hhfla3rmyx" path="res://manBlue_gun.png" id="3_dkw7a"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rr7p1"]
+resource_local_to_scene = true
+shader = ExtResource("2_ncfou")
+shader_parameter/type = 0
+shader_parameter/selected = false
+
+[node name="Survivor" instance=ExtResource("1_gkpms")]
+script = ExtResource("2_y63k7")
+
+[node name="Sprite2D" parent="." index="0"]
+material = SubResource("ShaderMaterial_rr7p1")
+rotation = 1.5708
+scale = Vector2(1, 1)
+texture = ExtResource("3_dkw7a")
+
+[node name="Network" parent="." index="5"]
+input_nodes = 7
+output_nodes = 4
+
+[node name="ShootingRay" type="RayCast2D" parent="." index="7"]
+
+[node name="ReloadTimer" type="Timer" parent="." index="8"]
+one_shot = true
+
+[node name="ShootingLine" type="Line2D" parent="." index="9"]
+visible = false
+points = PackedVector2Array(0, 0, 0, 0)
+
+[node name="BulletEffectTimer" type="Timer" parent="." index="10"]
+wait_time = 0.1
+one_shot = true
+
+[connection signal="timeout" from="BulletEffectTimer" to="." method="_on_bullet_effect_timer_timeout"]

@@ -1,0 +1,26 @@
+[gd_scene load_steps=6 format=3 uid="uid://br6iok2dv6lql"]
+
+[ext_resource type="PackedScene" uid="uid://dhrmm8q3krafx" path="res://Agent.tscn" id="1_jgpdg"]
+[ext_resource type="Shader" path="res://AgentColor.gdshader" id="2_3xx2n"]
+[ext_resource type="Script" path="res://Zombie.gd" id="2_lqof1"]
+[ext_resource type="Texture2D" uid="uid://c005w1p3ro2hf" path="res://zoimbie1_hold.png" id="3_smu41"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_13psr"]
+resource_local_to_scene = true
+shader = ExtResource("2_3xx2n")
+shader_parameter/type = 0
+shader_parameter/selected = false
+
+[node name="Zombie" instance=ExtResource("1_jgpdg")]
+script = ExtResource("2_lqof1")
+type = 1
+
+[node name="Sprite2D" parent="." index="0"]
+material = SubResource("ShaderMaterial_13psr")
+rotation = 1.5708
+scale = Vector2(1, 1)
+texture = ExtResource("3_smu41")
+
+[node name="Network" parent="." index="5"]
+input_nodes = 4
+hidden_nodes = 4

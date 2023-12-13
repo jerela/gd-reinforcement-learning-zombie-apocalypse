@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://ci37scgn2d0jw"]
+
+[ext_resource type="PackedScene" uid="uid://i6bk7b2ophdv" path="res://Observer.tscn" id="2_ep0bc"]
+[ext_resource type="PackedScene" uid="uid://cq66kbknkwtf7" path="res://Trainer.tscn" id="2_ne1tj"]
+[ext_resource type="PackedScene" uid="uid://cknmrwr5mfqaa" path="res://GUI.tscn" id="3_3urrd"]
+
+[node name="Map" type="Node2D"]
+
+[node name="Observer" parent="." instance=ExtResource("2_ep0bc")]
+
+[node name="Trainer" parent="." instance=ExtResource("2_ne1tj")]
+gui_node = NodePath("../GUI")
+n_survivors = 10
+n_zombies = 10
+speed_multiplier = 5.0
+mutation_amount = 0.005
+
+[node name="GUI" parent="." instance=ExtResource("3_3urrd")]
+trainer_node = NodePath("../Trainer")

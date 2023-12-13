@@ -1,0 +1,224 @@
+[gd_scene load_steps=2 format=3 uid="uid://cknmrwr5mfqaa"]
+
+[ext_resource type="Script" path="res://GUI.gd" id="1_ct30c"]
+
+[node name="CanvasLayer" type="CanvasLayer"]
+script = ExtResource("1_ct30c")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+mouse_filter = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -320.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/PanelContainer"]
+layout_mode = 2
+
+[node name="InfoPanel" type="PanelContainer" parent="Control/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/PanelContainer/VBoxContainer/InfoPanel"]
+layout_mode = 2
+
+[node name="EpochLabel" type="Label" parent="Control/PanelContainer/VBoxContainer/InfoPanel/VBoxContainer"]
+layout_mode = 2
+text = "Epoch X"
+
+[node name="TrainingControlPanel" type="PanelContainer" parent="Control/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/PanelContainer/VBoxContainer/TrainingControlPanel"]
+layout_mode = 2
+
+[node name="MutationRow" type="HBoxContainer" parent="Control/PanelContainer/VBoxContainer/TrainingControlPanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/PanelContainer/VBoxContainer/TrainingControlPanel/VBoxContainer/MutationRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Mutation amount"
+
+[node name="MutationAmountBox" type="SpinBox" parent="Control/PanelContainer/VBoxContainer/TrainingControlPanel/VBoxContainer/MutationRow"]
+layout_mode = 2
+max_value = 1.0
+step = 0.001
+value = 0.005
+
+[node name="SpeedRow" type="HBoxContainer" parent="Control/PanelContainer/VBoxContainer/TrainingControlPanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/PanelContainer/VBoxContainer/TrainingControlPanel/VBoxContainer/SpeedRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Speed multiplier"
+
+[node name="SpeedMultiplierBox" type="SpinBox" parent="Control/PanelContainer/VBoxContainer/TrainingControlPanel/VBoxContainer/SpeedRow"]
+layout_mode = 2
+
+[node name="DurationRow" type="HBoxContainer" parent="Control/PanelContainer/VBoxContainer/TrainingControlPanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/PanelContainer/VBoxContainer/TrainingControlPanel/VBoxContainer/DurationRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Epoch duration"
+
+[node name="EpochDurationBox" type="SpinBox" parent="Control/PanelContainer/VBoxContainer/TrainingControlPanel/VBoxContainer/DurationRow"]
+layout_mode = 2
+min_value = 1.0
+value = 1.0
+suffix = "s"
+
+[node name="SpawnSeparationRow" type="HBoxContainer" parent="Control/PanelContainer/VBoxContainer/TrainingControlPanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/PanelContainer/VBoxContainer/TrainingControlPanel/VBoxContainer/SpawnSeparationRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Spawn separation"
+
+[node name="SpawnSeparationBox" type="SpinBox" parent="Control/PanelContainer/VBoxContainer/TrainingControlPanel/VBoxContainer/SpawnSeparationRow"]
+layout_mode = 2
+max_value = 1000.0
+value = 200.0
+suffix = "px"
+
+[node name="SurvivorNumberRow" type="HBoxContainer" parent="Control/PanelContainer/VBoxContainer/TrainingControlPanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/PanelContainer/VBoxContainer/TrainingControlPanel/VBoxContainer/SurvivorNumberRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Number of survivors"
+
+[node name="SurvivorNumberBox" type="SpinBox" parent="Control/PanelContainer/VBoxContainer/TrainingControlPanel/VBoxContainer/SurvivorNumberRow"]
+layout_mode = 2
+value = 5.0
+
+[node name="ZombieNumberRow" type="HBoxContainer" parent="Control/PanelContainer/VBoxContainer/TrainingControlPanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/PanelContainer/VBoxContainer/TrainingControlPanel/VBoxContainer/ZombieNumberRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Number of zombies"
+
+[node name="ZombieNumberBox" type="SpinBox" parent="Control/PanelContainer/VBoxContainer/TrainingControlPanel/VBoxContainer/ZombieNumberRow"]
+layout_mode = 2
+value = 5.0
+
+[node name="SurvivorSpawnRow" type="HBoxContainer" parent="Control/PanelContainer/VBoxContainer/TrainingControlPanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/PanelContainer/VBoxContainer/TrainingControlPanel/VBoxContainer/SurvivorSpawnRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Survivor spawn"
+
+[node name="PanelContainer" type="PanelContainer" parent="Control/PanelContainer/VBoxContainer/TrainingControlPanel/VBoxContainer/SurvivorSpawnRow"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/PanelContainer/VBoxContainer/TrainingControlPanel/VBoxContainer/SurvivorSpawnRow/PanelContainer"]
+layout_mode = 2
+
+[node name="SurvivorX" type="SpinBox" parent="Control/PanelContainer/VBoxContainer/TrainingControlPanel/VBoxContainer/SurvivorSpawnRow/PanelContainer/HBoxContainer"]
+layout_mode = 2
+max_value = 2560.0
+suffix = "px"
+
+[node name="SurvivorY" type="SpinBox" parent="Control/PanelContainer/VBoxContainer/TrainingControlPanel/VBoxContainer/SurvivorSpawnRow/PanelContainer/HBoxContainer"]
+layout_mode = 2
+max_value = 2560.0
+suffix = "px"
+
+[node name="ZombieSpawnRow" type="HBoxContainer" parent="Control/PanelContainer/VBoxContainer/TrainingControlPanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/PanelContainer/VBoxContainer/TrainingControlPanel/VBoxContainer/ZombieSpawnRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Zombie spawn"
+
+[node name="PanelContainer" type="PanelContainer" parent="Control/PanelContainer/VBoxContainer/TrainingControlPanel/VBoxContainer/ZombieSpawnRow"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/PanelContainer/VBoxContainer/TrainingControlPanel/VBoxContainer/ZombieSpawnRow/PanelContainer"]
+layout_mode = 2
+
+[node name="ZombieX" type="SpinBox" parent="Control/PanelContainer/VBoxContainer/TrainingControlPanel/VBoxContainer/ZombieSpawnRow/PanelContainer/HBoxContainer"]
+layout_mode = 2
+max_value = 2560.0
+suffix = "px"
+
+[node name="ZombieY" type="SpinBox" parent="Control/PanelContainer/VBoxContainer/TrainingControlPanel/VBoxContainer/ZombieSpawnRow/PanelContainer/HBoxContainer"]
+layout_mode = 2
+max_value = 2560.0
+suffix = "px"
+
+[node name="AgentPanel" type="PanelContainer" parent="Control/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/PanelContainer/VBoxContainer/AgentPanel"]
+layout_mode = 2
+
+[node name="AgentNameLabel" type="Label" parent="Control/PanelContainer/VBoxContainer/AgentPanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="AgentTypeLabel" type="Label" parent="Control/PanelContainer/VBoxContainer/AgentPanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="AgentHealthLabel" type="Label" parent="Control/PanelContainer/VBoxContainer/AgentPanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/PanelContainer/VBoxContainer/AgentPanel/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/PanelContainer/VBoxContainer/AgentPanel/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Load or save the weights of this agent:"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/PanelContainer/VBoxContainer/AgentPanel/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="SaveButton" type="Button" parent="Control/PanelContainer/VBoxContainer/AgentPanel/VBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Save weights"
+
+[node name="LoadButton" type="Button" parent="Control/PanelContainer/VBoxContainer/AgentPanel/VBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Load weights:"
+
+[node name="ItemList" type="ItemList" parent="Control/PanelContainer/VBoxContainer/AgentPanel/VBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+auto_height = true
+item_count = 2
+item_0/text = "Survivors"
+item_1/text = "Zombies"
+
+[node name="FileNameLine" type="LineEdit" parent="Control/PanelContainer/VBoxContainer/AgentPanel/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+placeholder_text = "type file name here"
+
+[connection signal="value_changed" from="Control/PanelContainer/VBoxContainer/TrainingControlPanel/VBoxContainer/MutationRow/MutationAmountBox" to="." method="_on_mutation_box_value_changed"]
+[connection signal="value_changed" from="Control/PanelContainer/VBoxContainer/TrainingControlPanel/VBoxContainer/SpeedRow/SpeedMultiplierBox" to="." method="_on_speed_box_value_changed"]
+[connection signal="value_changed" from="Control/PanelContainer/VBoxContainer/TrainingControlPanel/VBoxContainer/DurationRow/EpochDurationBox" to="." method="_on_epoch_duration_value_changed"]
+[connection signal="value_changed" from="Control/PanelContainer/VBoxContainer/TrainingControlPanel/VBoxContainer/SpawnSeparationRow/SpawnSeparationBox" to="." method="_on_spawn_separation_value_changed"]
+[connection signal="pressed" from="Control/PanelContainer/VBoxContainer/AgentPanel/VBoxContainer/VBoxContainer/HBoxContainer/SaveButton" to="." method="_on_save_button_pressed"]
+[connection signal="pressed" from="Control/PanelContainer/VBoxContainer/AgentPanel/VBoxContainer/VBoxContainer/HBoxContainer/LoadButton" to="." method="_on_load_button_pressed"]

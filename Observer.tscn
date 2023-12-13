@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://i6bk7b2ophdv"]
+
+[ext_resource type="Script" path="res://Observer.gd" id="1_la48a"]
+
+[node name="Observer" type="Camera2D"]
+zoom = Vector2(0.2, 0.2)
+script = ExtResource("1_la48a")

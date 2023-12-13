@@ -1,0 +1,51 @@
+[gd_scene load_steps=7 format=3 uid="uid://dhrmm8q3krafx"]
+
+[ext_resource type="Script" path="res://Agent.gd" id="1_scjwo"]
+[ext_resource type="Texture2D" uid="uid://cybc842f6s5do" path="res://icon.svg" id="2_j83de"]
+[ext_resource type="Shader" path="res://AgentColor.gdshader" id="2_m56b6"]
+[ext_resource type="PackedScene" uid="uid://bcbu0nchqx60j" path="res://Network.tscn" id="3_p7jrj"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3w68t"]
+resource_local_to_scene = true
+shader = ExtResource("2_m56b6")
+shader_parameter/type = 0
+shader_parameter/selected = false
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mgw46"]
+radius = 25.0
+
+[node name="Agent" type="CharacterBody2D"]
+collision_layer = 3
+input_pickable = true
+script = ExtResource("1_scjwo")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_3w68t")
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("2_j83de")
+
+[node name="VisionRay" type="RayCast2D" parent="."]
+target_position = Vector2(0, 600)
+
+[node name="LineToZombies" type="Line2D" parent="."]
+visible = false
+points = PackedVector2Array(0, 0, 0, 0)
+default_color = Color(1, 0.411765, 0.188235, 1)
+
+[node name="LineToSurvivors" type="Line2D" parent="."]
+visible = false
+points = PackedVector2Array(0, 0, 0, 0)
+default_color = Color(0, 0.733333, 0.521569, 1)
+
+[node name="CollisionShape" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_mgw46")
+
+[node name="Network" parent="." instance=ExtResource("3_p7jrj")]
+input_nodes = 6
+hidden_nodes = 5
+output_nodes = 3
+
+[node name="StunTimer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="input_event" from="." to="." method="_on_input_event"]
