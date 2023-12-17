@@ -1,42 +1,24 @@
 extends "res://Agent.gd"
 
-#func _ready():
-#	pass
-	
-#func _process
-
-#- reinforcement learning zombies & survivors
-#   - each survivor has three shots
-#   - it takes three shots to kill a zombie, with each shot slowing it down
-#   - it takes two shots to kill a survivor, but just one shot will slow the survivor down
-#   - survivors are rated based on how long they survive
-#   - zombies are rated based on how many they infect/kill and how quickly
-#   - if a survivor dies with ammo, that ammo will carry on to the zombie
-#   - survivors can see other survivors, zombies, and the health and ammo of themselves, other survivors and zombies
-#   - zombies can see other survivors, zombies, and the health of themselves, other survivors, and zombies
-#   - if a zombie kills a survivor, it will become dormant for a moment --> incentivices survivors to shoot others to slow zombies?
-#   - zombies may learn to prioritize attacking wounded survivors, because they are slower?
-#   - survivors have stamina that will deplete when they run and regenerate otherwise; zombies move at constant medium speed
-#   - survivors walk slowly and run fast
-
-#- sweeping raycast that reports relative angle and distance?
-
-#- objects: survivor, zombie, corpse
-
-#survivor network
-#- 8 inputs: own stamina, own ammo, own health, distance to/angle to/health/ammo/type of nearest object
-#- 5 outputs: turn amount, forward movement, sideways movement, run effort, shoot/not
-
-#zombie network
-#- 5 inputs: distance to/angle to/health of nearest survivor, distance/angle to nearest zombie
-#- x outputs: turn amount, forward movement, sideways movement
-
 func control(delta_modified):
 	var inputs = [angles_forward[0], angles_forward[1], angles_side[0], angles_side[1]]
 	var outputs = $Network.propagate(inputs)
-	outputs[2] = clamp(outputs[2],1.0,-0.5)
-	rotation_degrees += outputs[0]*delta_modified*100
-	var collision = move_and_collide(Vector2(outputs[1]*delta_modified*10,outputs[2]*delta_modified*100).rotated(deg_to_rad(rotation_degrees)))
+
+	# clamp forward acceleration between -0.5 and 1.0 to encourage the agents running forward rather than backward
+	var forward_motion = clamp(outputs[2],-0.5,1.0)*delta_modified*100
+	# limit strafe motion to tenth of what forward motion is
+	var strafe_motion = outputs[1]*delta_modified*10
+	var rotation_motion = outputs[0]*delta_modified*80
+	# make the agent move slower if it's below max health
+	if health < max_health:
+		rotation_motion *= health/max_health
+		forward_motion += health/max_health
+	
+	# rotate the agent
+	rotation_degrees += rotation_motion	
+	
+	# apply translation
+	var collision = move_and_collide(Vector2(strafe_motion,forward_motion).rotated(deg_to_rad(rotation_degrees)))
 	resolve_collision(collision)
 
 func resolve_collision(collision):

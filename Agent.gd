@@ -1,36 +1,5 @@
 extends CharacterBody2D
 
-
-
-#- reinforcement learning zombies & survivors
-#   - each survivor has three shots
-#   - it takes three shots to kill a zombie, with each shot slowing it down
-#   - it takes two shots to kill a survivor, but just one shot will slow the survivor down
-#   - survivors are rated based on how long they survive
-#   - zombies are rated based on how many they infect/kill and how quickly
-#   - if a survivor dies with ammo, that ammo will carry on to the zombie
-#   - survivors can see other survivors, zombies, and the health and ammo of themselves, other survivors and zombies
-#   - zombies can see other survivors, zombies, and the health of themselves, other survivors, and zombies
-#   - if a zombie kills a survivor, it will become dormant for a moment --> incentivices survivors to shoot others to slow zombies?
-#   - zombies may learn to prioritize attacking wounded survivors, because they are slower?
-#   - survivors have stamina that will deplete when they run and regenerate otherwise; zombies move at constant medium speed
-#   - survivors walk slowly and run fast
-
-#- sweeping raycast that reports relative angle and distance?
-
-#- objects: survivor, zombie, corpse
-
-#survivor network
-#- 8 inputs: own stamina, own ammo, own health, distance to/angle to/health/ammo/type of nearest object
-#- 5 outputs: turn amount, forward movement, sideways movement, run effort, shoot/not
-
-#zombie network
-#- 5 inputs: distance to/angle to/health of nearest survivor, distance/angle to nearest zombie
-#- x outputs: turn amount, forward movement, sideways movement
-
-
-
-# there are three object types: survivor, zombie, and corpse (dead survivor, essentially just loot for survivors)
 enum AGENT_TYPE {SURVIVOR, ZOMBIE, CORPSE}
 
 var vision_angle = 0
@@ -133,7 +102,7 @@ func proximity(distance):
 func control(delta_modified):
 	var inputs = [angles_forward[0], angles_forward[1], angles_side[0], angles_side[1], proximities[0], proximities[1]]
 	var outputs = $Network.propagate(inputs)
-	outputs[2] = clamp(outputs[2],1.0,-0.5)
+	outputs[2] = clamp(outputs[2],-0.5,1.0)
 	rotation_degrees += outputs[0]*delta_modified*100
 	var collision = move_and_collide(Vector2(outputs[1]*delta_modified*10,outputs[2]*delta_modified*100).rotated(deg_to_rad(rotation_degrees)))
 	resolve_collision(collision)
@@ -181,7 +150,6 @@ func reset(type_in):
 	target_position_zombies = Vector2(0,0)
 	target_position_corpses = Vector2(0,0)
 	$StunTimer.stop()
-	#$CollisionShape.disabled = false
 	set_collision_layer_value(1,true)
 	set_rotation_degrees(randf_range(-180,180))
 	update_shader_param()
@@ -200,3 +168,14 @@ func _on_input_event(viewport, event, shape_idx):
 		get_parent().gui.set_agent_details([type, health, max_health])
 		get_parent().selected_weights = network.get_weights()
 
+func get_shot():
+	var death = update_health(-1)
+	if type == AGENT_TYPE.ZOMBIE and death:
+		print("zombie killed! greatly adding score")
+		return 4
+	elif type == AGENT_TYPE.ZOMBIE:
+		print("zombie hit! adding score")
+		return 2
+	else:
+		print("survivor hit! penalizing score")
+		return -1

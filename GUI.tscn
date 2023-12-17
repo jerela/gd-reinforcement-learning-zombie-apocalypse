@@ -67,6 +67,7 @@ text = "Speed multiplier"
 
 [node name="SpeedMultiplierBox" type="SpinBox" parent="Control/PanelContainer/VBoxContainer/TrainingControlPanel/VBoxContainer/SpeedRow"]
 layout_mode = 2
+value = 5.0
 
 [node name="DurationRow" type="HBoxContainer" parent="Control/PanelContainer/VBoxContainer/TrainingControlPanel/VBoxContainer"]
 layout_mode = 2
@@ -79,7 +80,7 @@ text = "Epoch duration"
 [node name="EpochDurationBox" type="SpinBox" parent="Control/PanelContainer/VBoxContainer/TrainingControlPanel/VBoxContainer/DurationRow"]
 layout_mode = 2
 min_value = 1.0
-value = 1.0
+value = 5.0
 suffix = "s"
 
 [node name="SpawnSeparationRow" type="HBoxContainer" parent="Control/PanelContainer/VBoxContainer/TrainingControlPanel/VBoxContainer"]
@@ -106,7 +107,7 @@ text = "Number of survivors"
 
 [node name="SurvivorNumberBox" type="SpinBox" parent="Control/PanelContainer/VBoxContainer/TrainingControlPanel/VBoxContainer/SurvivorNumberRow"]
 layout_mode = 2
-value = 5.0
+value = 10.0
 
 [node name="ZombieNumberRow" type="HBoxContainer" parent="Control/PanelContainer/VBoxContainer/TrainingControlPanel/VBoxContainer"]
 layout_mode = 2
@@ -118,7 +119,7 @@ text = "Number of zombies"
 
 [node name="ZombieNumberBox" type="SpinBox" parent="Control/PanelContainer/VBoxContainer/TrainingControlPanel/VBoxContainer/ZombieNumberRow"]
 layout_mode = 2
-value = 5.0
+value = 10.0
 
 [node name="SurvivorSpawnRow" type="HBoxContainer" parent="Control/PanelContainer/VBoxContainer/TrainingControlPanel/VBoxContainer"]
 layout_mode = 2

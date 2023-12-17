@@ -1,74 +1,77 @@
 extends "res://Agent.gd"
 
+# visible trace of a shot bullet, drawn as a 2D line
+var trace = load("res://BulletTrace.tscn")
 
-
-#- reinforcement learning zombies & survivors
-#   - each survivor has three shots
-#   - it takes three shots to kill a zombie, with each shot slowing it down
-#   - it takes two shots to kill a survivor, but just one shot will slow the survivor down
-#   - survivors are rated based on how long they survive
-#   - zombies are rated based on how many they infect/kill and how quickly
-#   - if a survivor dies with ammo, that ammo will carry on to the zombie
-#   - survivors can see other survivors, zombies, and the health and ammo of themselves, other survivors and zombies
-#   - zombies can see other survivors, zombies, and the health of themselves, other survivors, and zombies
-#   - if a zombie kills a survivor, it will become dormant for a moment --> incentivices survivors to shoot others to slow zombies?
-#   - zombies may learn to prioritize attacking wounded survivors, because they are slower?
-#   - survivors have stamina that will deplete when they run and regenerate otherwise; zombies move at constant medium speed
-#   - survivors walk slowly and run fast
-
-#- sweeping raycast that reports relative angle and distance?
-
-#- objects: survivor, zombie, corpse
-
-#survivor network
-#- 8 inputs: own stamina, own ammo, own health, distance to/angle to/health/ammo/type of nearest object
-#- 5 outputs: turn amount, forward movement, sideways movement, run effort, shoot/not
-
-#zombie network
-#- 5 inputs: distance to/angle to/health of nearest survivor, distance/angle to nearest zombie
-#- x outputs: turn amount, forward movement, sideways movement
-
-
-
-# there are three object types: survivor, zombie, and corpse (dead survivor, essentially just loot for survivors)
-
+# whether the survivor is currently reloading their gun
 var reloading = false
 
+# when the node is ready, we set the raycast checking for hit agents to the desired length (vision_range)
 func call_on_ready():
 	$ShootingRay.target_position = Vector2(0,vision_range)
-	$ShootingLine.points[1] = Vector2(0,vision_range)
 
+# survivors bumping into agents will have no effect
 func resolve_collision(collision):
 	pass
 	
+# this function controls the actions and movement of the agents
 func control(delta_modified):
-	
-	reloading = $ReloadTimer.is_stopped()
+
+	# check if we're still reloading (if the timer is still running)
+	reloading = !$ReloadTimer.is_stopped()
+	# by default, we assume we're not able to fire yet, but if we're not reloading and we have ammo left, then we're able to fire
 	var able_to_fire = false
 	if reloading == false and ammo > 0:
 		able_to_fire = true
 	
+	# give inputs to the network; including whether we're able to fire now (the network will decide if we are going to fire)
 	var inputs = [angles_forward[0], angles_forward[1], angles_side[0], angles_side[1], proximities[0], proximities[1], int(able_to_fire)]
 	var outputs = $Network.propagate(inputs)
-	outputs[2] = clamp(outputs[2],1.0,-0.5)
-	rotation_degrees += outputs[0]*delta_modified*100
-	var collision = move_and_collide(Vector2(outputs[1]*delta_modified*10,outputs[2]*delta_modified*100).rotated(deg_to_rad(rotation_degrees)))
+	
+	# clamp forward acceleration between -0.5 and 1.0 to encourage the agents running forward rather than backward
+	var forward_motion = clamp(outputs[2],-0.5,1.0)*delta_modified*100
+	# limit strafe motion to tenth of what forward motion is
+	var strafe_motion = outputs[1]*delta_modified*10
+	var rotation_motion = outputs[0]*delta_modified*80
+	# make the agent move slower if it's below max health
+	if health < max_health:
+		rotation_motion *= health/max_health
+		forward_motion += health/max_health
+	
+	# rotate the agent
+	rotation_degrees += rotation_motion	
+	
+	# apply translation
+	var collision = move_and_collide(Vector2(strafe_motion,forward_motion).rotated(deg_to_rad(rotation_degrees)))
+	# fire if the network so decides and we're able to fire
 	if outputs[3] > 0 and able_to_fire:
-		print("BAM")
 		fire()
 	resolve_collision(collision)
 
+# when the survivor fires a gun, see if it hits anything, start the reload timer to prevent the survivor from shooting all their ammo in an instant
 func fire():
-	$BulletEffectTimer.start(0.1)
-	$ShootingLine.visible = true
+
+	var dist = vision_range
 	ammo -= 1
 	$ShootingRay.force_raycast_update()
 	if $VisionRay.is_colliding():
 		var collider = $ShootingRay.get_collider()
-		collider.get_shot()
+		if collider != null:
+			#print(var_to_str(collider))
+			var result = collider.get_shot()
+			score += result
+			dist = $ShootingRay.get_collision_point().length()
 	reloading = true
-	$ReloadTimer.start(1)
+	$ReloadTimer.start(1.0/speed_multiplier)
+	
+	# create a visual trace of the bullet
+	var bullet_trace = trace.instantiate()
+	bullet_trace.set_global_position(get_global_position())
+	bullet_trace.set_rotation(get_rotation())
+	bullet_trace.set_target(Vector2(0,dist))
+	get_parent().add_child(bullet_trace)
 
+# scan around the agent for other agents; this lets the agent observe others
 func sweep_raycast(delta_modified):
 	
 	proximities = [0, 0, 0]
@@ -142,6 +145,3 @@ func sweep_raycast(delta_modified):
 	angles_side[AGENT_TYPE.ZOMBIE] = sin(angle_zombies)
 
 
-
-func _on_bullet_effect_timer_timeout():
-	$ShootingLine.visible = false

@@ -138,12 +138,14 @@ func evaluate_fitness():
 		survivor.network.set_weights(best_weights_survivor.duplicate(true))
 
 	# mutate all but two; of the remaining two, reinitialize one and keep one
-	for i in range(n_survivors-2):
+	for i in range(n_survivors-3):
 		survivors[i+1].network.mutate(mutation_amount)
 	survivors[n_survivors-1].network.reinitialize()
-	for i in range(n_zombies-2):
+	survivors[n_survivors-2].network.reinitialize()
+	for i in range(n_zombies-3):
 		zombies[i+1].network.mutate(mutation_amount)
 	zombies[n_zombies-1].network.reinitialize()
+	zombies[n_zombies-2].network.reinitialize()
 
 	# re-initialize the scenario
 	for zombie in zombies:

@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://dm2hmsvlh51f4"]
+
+[ext_resource type="Script" path="res://BulletTrace.gd" id="1_lj2p6"]
+
+[node name="BulletTrace" type="Node2D"]
+script = ExtResource("1_lj2p6")
+
+[node name="Line2D" type="Line2D" parent="."]
+points = PackedVector2Array(0, 0, 0, 0)
+
+[node name="LifeTimer" type="Timer" parent="."]
+wait_time = 0.1
+one_shot = true
+autostart = true
+
+[connection signal="timeout" from="LifeTimer" to="." method="_on_life_timer_timeout"]

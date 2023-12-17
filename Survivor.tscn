@@ -28,13 +28,4 @@ output_nodes = 4
 
 [node name="ReloadTimer" type="Timer" parent="." index="8"]
 one_shot = true
-
-[node name="ShootingLine" type="Line2D" parent="." index="9"]
-visible = false
-points = PackedVector2Array(0, 0, 0, 0)
-
-[node name="BulletEffectTimer" type="Timer" parent="." index="10"]
-wait_time = 0.1
-one_shot = true
-
-[connection signal="timeout" from="BulletEffectTimer" to="." method="_on_bullet_effect_timer_timeout"]
+autostart = true
